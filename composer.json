@@ -1,0 +1,24 @@
+{
+    "name": "emeri/doctrine",
+    "require": {
+        "emeric0101/phpangular":"dev-master",
+        "phpmailer/phpmailer": "^5.2"
+    },
+    "repositories": [
+    {
+        "type":"vcs",
+        "url":"../phpangular"
+    }
+	],
+	"autoload": {
+        "psr-4": {
+            "LIM\\MoreSalle\\Entity\\": "src/Entity/",
+            "LIM\\MoreSalle\\Repository\\": "src/Repository/",
+            "LIM\\MoreSalle\\Controller\\": "src/Controller/",
+            "LIM\\MoreSalle\\Service\\": "src/Service/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    }
+}
