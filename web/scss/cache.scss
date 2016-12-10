@@ -1,0 +1,8 @@
+@import 'global.scss';
+
+@import '../node_modules/foundation-sites/scss/foundation.scss';
+@import '../node_modules/font-awesome/scss/font-awesome.scss';
+
+@include foundation-everything;
+@import '../app/Component/Home/Home/Home.scss';
+@import '../app/Component/User/Login/Login.scss';

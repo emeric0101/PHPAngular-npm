@@ -1,0 +1,17 @@
+.HomeHome {
+    .topBar {
+        .logo {
+            background-image: url('../images/concorde.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            height: 15vh;
+            width: 100%;
+        }
+    }
+    .wrapper {
+        .widget {
+            border: 1px solid grey;
+            min-height: 400px;
+        }
+    }
+}

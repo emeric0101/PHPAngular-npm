@@ -3,7 +3,7 @@
 define('APP_DIR', '');
 define('PHPANGULAR_DEBUG', true);
 define('URL_STORAGE', 'web/upload/');
-define('URL_ABSOLUTE', 'https://localhost/moresalle/webng2/');
+define('URL_ABSOLUTE', 'https://localhost/moresalle/web/');
 define('VERSION', '0000002');
 session_start();
 require_once "vendor/autoload.php";

@@ -34,16 +34,16 @@ class Reservation extends EntityAbstract
     /**
      * @ManyToMany(targetEntity="Lim\MoreSalle\Entity\Fichier")
      * @JoinTable(name="ressource_fichiers",
-     *      joinColumns={@JoinColumn(name="ressource_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="fichier_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@\Doctrine\ORM\Mapping\JoinColumn(name="ressource_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@\Doctrine\ORM\Mapping\JoinColumn(name="fichier_id", referencedColumnName="id", unique=true)}
      *      )
      */
      private $ressource_Fichier;
     /**
      * @ManyToMany(targetEntity="Lim\MoreSalle\Entity\Groupe")
      * @JoinTable(name="groupe_targeted",
-     *      joinColumns={@JoinColumn(name="reservation_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="groupe_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@\Doctrine\ORM\Mapping\JoinColumn(name="reservation_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@\Doctrine\ORM\Mapping\JoinColumn(name="groupe_id", referencedColumnName="id", unique=true)}
      *      )
      */
      private $groupe_targeted;

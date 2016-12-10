@@ -33,7 +33,7 @@
     <div ng-view id="mainWrapper" class="container">
     </div>
 <?php else: ?>
-    <phpangular-app id="mainWrapper" class="container"></phpangular-app>
+    <phpangular-app id="mainWrapper" class="container">Chargement en cours...</phpangular-app>
 <?php endif; ?>
 </body>
 </html>

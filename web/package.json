@@ -1,0 +1,51 @@
+{
+  "name": "moresalle",
+  "version": "1.0.0",
+  "description": "private application",
+  "main": "core/js/MainController.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "node-sass --include-path \"node_modules/normalize-scss/sass;node_modules/foundation-sites/scss\" scss/cache.scss -o cache/"
+  },
+  "author": "Emeric BAVEUX",
+  "license": "SEE LICENSE IN license",
+  "dependencies": {
+    "@angular/common": "^2.0.0",
+    "@angular/compiler": "^2.0.0",
+    "@angular/core": "^2.0.0",
+    "@angular/forms": "^2.0.0",
+    "@angular/http": "^2.0.0",
+    "@angular/platform-browser": "^2.0.0",
+    "@angular/platform-browser-dynamic": "^2.0.0",
+    "@angular/router": "^3.0.0",
+    "@angular/upgrade": "^2.0.0",
+    "angular2-in-memory-web-api": "0.0.20",
+    "bootstrap": "^3.3.6",
+    "core-js": "^2.4.1",
+    "foundation-sites": "^6.3.0-rc1",
+    "jquery": "^3.1.1",
+    "ng2-datepicker": "^1.3.1",
+    "normalize-scss": "^6.0.0",
+    "phpangular": "^1.0.1",
+    "reflect-metadata": "^0.1.3",
+    "rxjs": "^5.0.0",
+    "systemjs": "^0.19",
+    "zone.js": "^0.6.23"
+  },
+  "devDependencies": {
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.3.0",
+    "karma-cli": "^1.0.1",
+    "karma-htmlfile-reporter": "^0.3.4",
+    "karma-jasmine": "^1.0.2",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "node-sass": "^3.13.0",
+    "typescript": "^2.1.1",
+    "typings": "^2.0.0"
+  },
+  "ambientDependencies": {
+    "es6-promise": "^4.0.0",
+    "es6-shim": "^0.35.0"
+  }
+}
