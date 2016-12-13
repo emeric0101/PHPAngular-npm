@@ -138,6 +138,9 @@ export class RepositoryService {
     }
     /** best way to create an entity */
     createEntity(name) {
+        if (RepositoryService.EntityPrototype[name] == undefined) {
+            throw 'CreateEntity : entity not declared : ' + name;
+        }
         return new RepositoryService.EntityPrototype[name](this);
     }
     /**

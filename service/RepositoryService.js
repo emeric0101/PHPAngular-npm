@@ -112,6 +112,9 @@ var RepositoryService = (function () {
         return entity;
     };
     RepositoryService.prototype.createEntity = function (name) {
+        if (RepositoryService.EntityPrototype[name] == undefined) {
+            throw 'CreateEntity : entity not declared : ' + name;
+        }
         return new RepositoryService.EntityPrototype[name](this);
     };
     RepositoryService.prototype.EntitiesFromJson = function (objs, name) {

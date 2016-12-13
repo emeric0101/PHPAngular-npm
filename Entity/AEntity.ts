@@ -86,7 +86,7 @@ export abstract class Model {
     * @param success callback
     * @param error callback
     */
-    protected foreignKeys(field: string) {
+    protected async foreignKeys<T extends Model>(field: string) : Promise<T[]>{
         var array = this[field];
         // If the value is not defined
         if (array === null) {
@@ -97,7 +97,11 @@ export abstract class Model {
         }
 
         for (var i in this[field]) {
-            this.foreignKey(i, null, null, this[field]);
+            await new Promise(resolve => {
+                this.foreignKey<T>(i, (r) => {
+                    resolve(r);
+                }, null, this[field]);
+            });
         }
         return this[field];
     }
@@ -127,7 +131,6 @@ export abstract class Model {
             }
 
 
-
             error = function() {};
 
             if (success == undefined) {
@@ -135,7 +138,6 @@ export abstract class Model {
             }
 
             var value = obj[field];
-
             if (value === null) {
                 success(null);
                 return null;
@@ -144,15 +146,13 @@ export abstract class Model {
 
             // If the key is already requested (or requested)
             let requestExist = ForeignKeyRequest.getForeignKeyRequestFromField(field, this.foreignKeyRequests);
-
             if (requestExist != null) {
                 requestExist.addCallback(success); // add callback
-
                 return obj[field];
             }
-
             // if already exist
             if ((obj[field] instanceof Model)) {
+                success(obj[field]);
                 return obj[field];
             }
             // create request for multiple callback
