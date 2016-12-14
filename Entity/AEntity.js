@@ -35,10 +35,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var ForeignKeyRequest = (function () {
-    function ForeignKeyRequest(callback, field) {
+    function ForeignKeyRequest(callback, field, error) {
         this.field = field;
+        this.error = error;
         this.callbacks = [];
         this.done = false;
+        this.errors = [];
         this.value = null;
         this.callbacks.push(callback);
     }
@@ -68,6 +70,16 @@ var ForeignKeyRequest = (function () {
         this.value = value;
         this.done = true;
         this.fireCallback();
+    };
+    ForeignKeyRequest.prototype.onError = function () {
+        this.done = true;
+        for (var _i = 0, _a = this.errors; _i < _a.length; _i++) {
+            var cb = _a[_i];
+            cb();
+        }
+    };
+    ForeignKeyRequest.prototype.addError = function (e) {
+        this.errors.push(e);
     };
     ForeignKeyRequest.prototype.fireCallback = function () {
         for (var _i = 0, _a = this.callbacks; _i < _a.length; _i++) {
@@ -106,7 +118,7 @@ var Model = (function () {
     Model.prototype.getName = function () {
         return this.name;
     };
-    Model.prototype.foreignKeys = function (field) {
+    Model.prototype.foreignKeysAsync = function (field) {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             var array, _a, _b, _i, i;
@@ -145,11 +157,18 @@ var Model = (function () {
             });
         });
     };
+    Model.prototype.foreignKeyAsync = function (field) {
+        var _this = this;
+        return new Promise(function (r) {
+            _this.foreignKey(field, function (m) {
+                r(m);
+            }, function () {
+                throw 'foreignKeyAsyncError';
+            });
+        });
+    };
     Model.prototype.foreignKey = function (field, success, error, obj) {
         if (obj === void 0) { obj = null; }
-        if (typeof (error) === 'function') {
-            throw "NOT READY YET : foreignKey";
-        }
         if (obj === null) {
             obj = this;
         }
@@ -165,13 +184,14 @@ var Model = (function () {
         var requestExist = ForeignKeyRequest.getForeignKeyRequestFromField(field, this.foreignKeyRequests);
         if (requestExist != null) {
             requestExist.addCallback(success);
+            requestExist.addError(error);
             return obj[field];
         }
         if ((obj[field] instanceof Model)) {
             success(obj[field]);
             return obj[field];
         }
-        var request = new ForeignKeyRequest(success, field);
+        var request = new ForeignKeyRequest(success, field, error);
         this.foreignKeyRequests.push(request);
         if (typeof (value['entity']) === 'undefined') {
             throw 'Model : foreignKey not an entity !';
@@ -182,7 +202,9 @@ var Model = (function () {
         };
         this.repositoryService.findById(value['entity'], value['id']).then(function (obj) {
             callbackSuccess(obj);
-        }).catch(error);
+        }).catch(function () {
+            request.onError();
+        });
         return obj[field];
     };
     ;

@@ -3,7 +3,7 @@ import { RepositoryService } from '../service/RepositoryService';
 class ForeignKeyRequest {
     private callbacks : ((model : Model) => void)[] = [];
     private done = false;
-
+    private errors : (() =>void)[] = [];
     private value = null;
     public static getForeignKeyRequestFromField(field :string, array : ForeignKeyRequest[]) {
         for (let request of array) {
@@ -35,6 +35,15 @@ class ForeignKeyRequest {
         this.done = true;
         this.fireCallback();
     }
+    public onError() {
+        this.done = true;
+        for (let cb of this.errors) {
+            cb();
+        }
+    }
+    public addError(e : () => void) {
+        this.errors.push(e);
+    }
 
     private fireCallback() {
         for (let cb of this.callbacks) {
@@ -45,7 +54,8 @@ class ForeignKeyRequest {
 
     public constructor(
         callback : ((model : Model) => void),
-        private field : string
+        private field : string,
+        private error : () => void
     ) {
         this.callbacks.push(callback);
     }
@@ -80,13 +90,8 @@ export abstract class Model {
     public getName() {
         return this.name;
     }
-    /**
-    * Get Entity from a foreignKey and put the entity into the value
-    * @param field string The field of the key
-    * @param success callback
-    * @param error callback
-    */
-    protected async foreignKeys<T extends Model>(field: string) : Promise<T[]>{
+
+    protected async foreignKeysAsync<T extends Model>(field: string) : Promise<T[]>{
         var array = this[field];
         // If the value is not defined
         if (array === null) {
@@ -114,18 +119,22 @@ export abstract class Model {
     * @param obj object to apply the foreginkey
     */
     private foreignKeyRequests : ForeignKeyRequest[] = [];
+    protected foreignKeyAsync<T extends Model>(field: string) {
+        return new Promise<T>(r => {
+            this.foreignKey(field, (m : T) => {
+                r(m);
+            },() => {
+                throw 'foreignKeyAsyncError';
+            });
+        });
+    }
     protected foreignKey<T extends Model>(
         field : string,
         success? : (obj : Model) => void,
         error? : () => void,
         obj = null
     ) {
-            if ( typeof(error) === 'function') {
-                // Il faut ajouter un systeme qui mette en file les callback pour qu'ils soient rappelé un fois
-                // l'objet chargé, car on peut demander 2x le chargement et l'objet arrive apres donc il faut
-                // appeler les 2 callback !
-                throw "NOT READY YET : foreignKey";
-            }
+
             if (obj === null) {
                 obj = this;
             }
@@ -148,6 +157,7 @@ export abstract class Model {
             let requestExist = ForeignKeyRequest.getForeignKeyRequestFromField(field, this.foreignKeyRequests);
             if (requestExist != null) {
                 requestExist.addCallback(success); // add callback
+                requestExist.addError(error); // add callback
                 return obj[field];
             }
             // if already exist
@@ -157,7 +167,7 @@ export abstract class Model {
             }
             // create request for multiple callback
             var request = new ForeignKeyRequest(
-                success, field
+                success, field, error
             )
             this.foreignKeyRequests.push(request);
 
@@ -172,7 +182,9 @@ export abstract class Model {
             };
             this.repositoryService.findById<T>(value['entity'], value['id']).then((obj) => {
                 callbackSuccess(obj);
-            }).catch(error);
+            }).catch(() => {
+                request.onError();
+            });
             return obj[field];
     };
 

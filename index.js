@@ -16,6 +16,8 @@ var RepositoryService_1 = require("./service/RepositoryService");
 exports.RepositoryService = RepositoryService_1.RepositoryService;
 var StorageService_1 = require("./service/StorageService");
 exports.StorageService = StorageService_1.StorageService;
+var AuthService_1 = require("./service/AuthService");
+exports.AuthService = AuthService_1.AuthService;
 __export(require("./service/LoginService"));
 String.prototype['ucFirst'] = function () {
     return this.charAt(0).toUpperCase() + this.slice(1);

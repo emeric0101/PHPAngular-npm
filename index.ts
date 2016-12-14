@@ -5,6 +5,7 @@ export { EntityManager } from './service/EntityManager';
 export { FlashmessageService } from './service/Flashmessage';
 export { RepositoryService } from './service/RepositoryService';
 export { StorageService } from './service/StorageService';
+export { AuthService } from './service/AuthService';
 export  *  from './service/LoginService';
 
 String.prototype['ucFirst'] = function() {
