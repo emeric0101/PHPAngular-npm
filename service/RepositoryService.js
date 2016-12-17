@@ -34,7 +34,7 @@ var Request = (function () {
     return Request;
 }());
 Request.globalrequestid = 1;
-var RepositoryService = (function () {
+var RepositoryService = RepositoryService_1 = (function () {
     function RepositoryService(UrlService, AjaxService) {
         this.UrlService = UrlService;
         this.AjaxService = AjaxService;
@@ -112,10 +112,10 @@ var RepositoryService = (function () {
         return entity;
     };
     RepositoryService.prototype.createEntity = function (name) {
-        if (RepositoryService.EntityPrototype[name] == undefined) {
+        if (RepositoryService_1.EntityPrototype[name] == undefined) {
             throw 'CreateEntity : entity not declared : ' + name;
         }
-        return new RepositoryService.EntityPrototype[name](this);
+        return new RepositoryService_1.EntityPrototype[name](this);
     };
     RepositoryService.prototype.EntitiesFromJson = function (objs, name) {
         var objArray = [];
@@ -180,9 +180,10 @@ var RepositoryService = (function () {
     return RepositoryService;
 }());
 RepositoryService.EntityPrototype = [];
-RepositoryService = __decorate([
+RepositoryService = RepositoryService_1 = __decorate([
     core_1.Injectable(),
     __metadata("design:paramtypes", [UrlService_1.UrlService,
         AjaxService_1.AjaxService])
 ], RepositoryService);
 exports.RepositoryService = RepositoryService;
+var RepositoryService_1;

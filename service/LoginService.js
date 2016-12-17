@@ -109,6 +109,7 @@ var LoginService = (function () {
         });
     };
     LoginService.prototype.getUser = function (callback) {
+        if (callback === void 0) { callback = function (u) { }; }
         return __awaiter(this, void 0, void 0, function () {
             var user;
             return __generator(this, function (_a) {
@@ -117,7 +118,7 @@ var LoginService = (function () {
                     case 1:
                         user = _a.sent();
                         callback(user);
-                        return [2 /*return*/];
+                        return [2 /*return*/, user];
                 }
             });
         });

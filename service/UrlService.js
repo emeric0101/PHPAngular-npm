@@ -12,7 +12,7 @@ var core_1 = require("@angular/core");
 var Flashmessage_1 = require("./Flashmessage");
 require("./Flashmessage");
 var router_1 = require("@angular/router");
-var UrlService = (function () {
+var UrlService = UrlService_1 = (function () {
     function UrlService($flash, $router) {
         this.$flash = $flash;
         this.$router = $router;
@@ -32,9 +32,9 @@ var UrlService = (function () {
         if (params === void 0) { params = {}; }
         var url = module;
         if (action !== "") {
-            url += '-' + action;
+            url += '/' + action;
             if (typeof (id) !== 'undefined' && id !== null) {
-                url += '-' + id;
+                url += '/' + id;
             }
         }
         var first = true;
@@ -52,7 +52,7 @@ var UrlService = (function () {
     };
     UrlService.prototype.makeTemplate = function (module, action) {
         if (action === void 0) { action = ""; }
-        return UrlService.servername + "template/" + module + "/" + action + "/" + action + '-' + UrlService.version + '.html';
+        return UrlService_1.servername + "template/" + module + "/" + action + "/" + action + '-' + UrlService_1.version + '.html';
     };
     UrlService.prototype.makeApi = function (module, action, id, params) {
         module = module['ucFirst']();
@@ -83,8 +83,9 @@ var UrlService = (function () {
 }());
 UrlService.servername = '';
 UrlService.version = '0000001';
-UrlService = __decorate([
+UrlService = UrlService_1 = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [Flashmessage_1.FlashmessageService, router_1.Router])
+    __metadata("design:paramtypes", [Flashmessage_1.FlashmessageService, typeof (_a = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _a || Object])
 ], UrlService);
 exports.UrlService = UrlService;
+var UrlService_1, _a;

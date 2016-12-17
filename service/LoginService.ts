@@ -59,9 +59,10 @@ export class LoginService {
             this.$url.redirect('user', 'register', null, 'Au revoir', 'success');
         });
     }
-    async getUser(callback : (user : IUser) => void) {
+    async getUser(callback : (user : IUser) => void = (u) => {}) : Promise<IUser> {
         var user = await this.isLogged();
         callback(user);
+        return user;
     }
 
 

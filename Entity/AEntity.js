@@ -121,39 +121,25 @@ var Model = (function () {
     Model.prototype.foreignKeysAsync = function (field) {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
-            var array, _a, _b, _i, i;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        array = this[field];
+            return __generator(this, function (_a) {
+                return [2 /*return*/, new Promise(function (resolve) {
+                        var array = _this[field];
                         if (array === null) {
-                            return [2 /*return*/, null];
+                            return null;
                         }
                         if (array.length == 0) {
-                            return [2 /*return*/, []];
+                            return [];
                         }
-                        _a = [];
-                        for (_b in this[field])
-                            _a.push(_b);
-                        _i = 0;
-                        _c.label = 1;
-                    case 1:
-                        if (!(_i < _a.length))
-                            return [3 /*break*/, 4];
-                        i = _a[_i];
-                        return [4 /*yield*/, new Promise(function (resolve) {
-                                _this.foreignKey(i, function (r) {
-                                    resolve(r);
-                                }, null, _this[field]);
-                            })];
-                    case 2:
-                        _c.sent();
-                        _c.label = 3;
-                    case 3:
-                        _i++;
-                        return [3 /*break*/, 1];
-                    case 4: return [2 /*return*/, this[field]];
-                }
+                        var countDownLatch = _this[field].length;
+                        for (var i in _this[field]) {
+                            _this.foreignKey(i, function (r) {
+                                countDownLatch--;
+                                if (countDownLatch == 0) {
+                                    resolve(_this[field]);
+                                }
+                            }, null, _this[field]);
+                        }
+                    })];
             });
         });
     };

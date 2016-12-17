@@ -92,23 +92,26 @@ export abstract class Model {
     }
 
     protected async foreignKeysAsync<T extends Model>(field: string) : Promise<T[]>{
-        var array = this[field];
-        // If the value is not defined
-        if (array === null) {
-            return null;
-        }
-        if (array.length == 0) {
-            return [];
-        }
-
-        for (var i in this[field]) {
-            await new Promise(resolve => {
+        return new Promise<T[]>(resolve => {
+            var array = this[field];
+            // If the value is not defined
+            if (array === null) {
+                return null;
+            }
+            if (array.length == 0) {
+                return [];
+            }
+            let countDownLatch = this[field].length;
+            for (var i in this[field]) {
                 this.foreignKey<T>(i, (r) => {
-                    resolve(r);
+                    countDownLatch--;
+                    if (countDownLatch == 0) {
+                        resolve(this[field]);
+                    }
                 }, null, this[field]);
-            });
-        }
-        return this[field];
+
+            }
+        });
     }
 
     /**
